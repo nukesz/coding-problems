@@ -14,5 +14,5 @@ The following test should pass:
 
 ```go
 	node := &Node{"root", &Node{"left", &Node{"left.left", nil, nil}, nil}, &Node{"right", nil, nil}}
-	assert.Equal(t, "left.left", deserialize(serialize(node)))
+	assert.Equal(t, "left.left", deserialize(serialize(node)).left.left.val)
 ```
