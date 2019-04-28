@@ -23,29 +23,29 @@ func deserialize(s string) *Node {
 		return nil
 	}
 
-	r := regexp.MustCompile(`^\[ val: \"(\S*)\", left: nil, right: nil \]$`)
-	result := r.FindStringSubmatch(s)
-	if r.MatchString(s) {
+	if match, result := matchNode(`^\[ val: \"(\S*)\", left: nil, right: nil \]$`, s); match {
 		return &Node{result[1], nil, nil}
 	}
 
-	r = regexp.MustCompile(`^\[ val: \"(\S*)\", left: \[(.*)\], right: nil \]$`)
-	result = r.FindStringSubmatch(s)
-	if r.MatchString(s) {
+	if match, result := matchNode(`^\[ val: \"(\S*)\", left: \[(.*)\], right: nil \]$`, s); match {
 		return &Node{result[1], deserialize(fmt.Sprintf("[%s]", result[2])), nil}
 	}
 
-	r = regexp.MustCompile(`^\[ val: \"(\S*)\", left: nil, right: \[(.*)\] \]$`)
-	result = r.FindStringSubmatch(s)
-	if r.MatchString(s) {
+	if match, result := matchNode(`^\[ val: \"(\S*)\", left: nil, right: \[(.*)\] \]$`, s); match {
 		return &Node{result[1], nil, deserialize(fmt.Sprintf("[%s]", result[2]))}
 	}
 
-	r = regexp.MustCompile(`^\[ val: \"(\S*)\", left: \[(.*)\], right: \[(.*)\] \]$`)
-	result = r.FindStringSubmatch(s)
-	if r.MatchString(s) {
+	if match, result := matchNode(`^\[ val: \"(\S*)\", left: \[(.*)\], right: \[(.*)\] \]$`, s); match {
 		return &Node{result[1], deserialize(fmt.Sprintf("[%s]", result[2])), deserialize(fmt.Sprintf("[%s]", result[3]))}
 	}
 
 	return nil
+}
+
+func matchNode(pattern, node string) (bool, []string) {
+	r := regexp.MustCompile(pattern)
+	if r.MatchString(node) {
+		return true, r.FindStringSubmatch(node)
+	}
+	return false, nil
 }
