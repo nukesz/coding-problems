@@ -1,0 +1,15 @@
+package classroom
+
+// CountRequiredRooms solves:
+// Given an array of time intervals (start, end) for classroom lectures (possibly overlapping),
+// find the minimum number of rooms required.
+//
+// For example, given [(30, 75), (0, 50), (60, 150)], you should return 2.
+func CountRequiredRooms(intervals []Time) int {
+	return len(intervals)
+}
+
+// Time intervals (start, end) for classroom lectures
+type Time struct {
+	start, end int
+}
